@@ -1,0 +1,71 @@
+@model Room
+
+@{
+    ViewData["Title"] = "Delete Room";
+}
+
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="display-5 fw-bold text-danger">Delete Room</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="alert alert-warning">
+                <i class="bi bi-exclamation-triangle me-2"></i>
+                <strong>Warning!</strong> This action cannot be undone.
+            </div>
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-light">
+                    <h6 class="mb-0">Room Details</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <small class="text-muted">Room Number</small>
+                            <h6>@Model.RoomNumber</h6>
+                        </div>
+                        <div class="col-md-6">
+                            <small class="text-muted">Room Type</small>
+                            <h6>@Model.RoomType</h6>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <small class="text-muted">Price Per Night</small>
+                            <h6>${@Model.PricePerNight}</h6>
+                        </div>
+                        <div class="col-md-6">
+                            <small class="text-muted">Status</small>
+                            <h6>
+                                @if (Model.IsAvailable)
+                                {
+                                    <span class="badge bg-success">Available</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Occupied</span>
+                                }
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 d-flex gap-2">
+                <form asp-action="Delete" asp-route-id="@Model.Id" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-lg">
+                        <i class="bi bi-trash me-2"></i> Yes, Delete Room
+                    </button>
+                </form>
+                <a asp-action="Index" class="btn btn-outline-secondary btn-lg">
+                    <i class="bi bi-arrow-left me-2"></i> Cancel
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

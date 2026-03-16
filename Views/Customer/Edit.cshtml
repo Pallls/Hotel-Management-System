@@ -1,0 +1,94 @@
+@model Customer
+
+@{
+    ViewData["Title"] = "Edit Customer";
+}
+
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="display-5 fw-bold">Edit Customer #@Model.Id</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-5">
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <h5 class="alert-heading">❌ Validation Errors</h5>
+                            <ul class="mb-0">
+                                @foreach (var key in ViewData.ModelState.Keys)
+                                {
+                                    @foreach (var err in ViewData.ModelState[key].Errors)
+                                    {
+                                        <li>@err.ErrorMessage</li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                    }
+
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle me-2"></i>
+                        <strong>Update customer information below</strong>
+                    </div>
+
+                    <form asp-action="Edit" asp-controller="Customer" asp-route-id="@Model.Id" method="post" novalidate>
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="RegisteredDate" />
+
+                        <div class="mb-4">
+                            <label asp-for="Name" class="form-label fw-bold">
+                                Full Name <span class="text-danger">*</span>
+                            </label>
+                            <input asp-for="Name" type="text" class="form-control form-control-lg">
+                            <span asp-validation-for="Name" class="text-danger d-block"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Email" class="form-label fw-bold">
+                                Email <span class="text-danger">*</span>
+                            </label>
+                            <input asp-for="Email" type="email" class="form-control form-control-lg">
+                            <span asp-validation-for="Email" class="text-danger d-block"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="PhoneNumber" class="form-label fw-bold">
+                                Phone Number <span class="text-danger">*</span>
+                            </label>
+                            <input asp-for="PhoneNumber" type="tel" class="form-control form-control-lg">
+                            <span asp-validation-for="PhoneNumber" class="text-danger d-block"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Address" class="form-label fw-bold">
+                                Address <span class="text-danger">*</span>
+                            </label>
+                            <textarea asp-for="Address" class="form-control form-control-lg" rows="3"></textarea>
+                            <span asp-validation-for="Address" class="text-danger d-block"></span>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-check-circle me-2"></i> Update Customer
+                            </button>
+                            <a asp-action="Index" asp-controller="Customer" class="btn btn-outline-secondary btn-lg">
+                                <i class="bi bi-arrow-left me-2"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

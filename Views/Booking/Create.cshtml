@@ -1,0 +1,217 @@
+@model Booking
+
+@{
+    ViewData["Title"] = "Create Booking";
+}
+
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="display-5 fw-bold">Create New Booking</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-5">
+                    <!-- Show all validation errors -->
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <h5 class="alert-heading">❌ Validation Errors</h5>
+                            <ul class="mb-0">
+                                @foreach (var key in ViewData.ModelState.Keys)
+                                {
+                                    @foreach (var err in ViewData.ModelState[key].Errors)
+                                    {
+                                        <li>@err.ErrorMessage</li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                    }
+
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle me-2"></i>
+                        <strong>Required fields marked with <span class="text-danger">*</span></strong>
+                    </div>
+
+                    <form asp-action="Create" asp-controller="Booking" method="post" novalidate>
+                        <div class="mb-4">
+                            <label for="CustomerId" class="form-label fw-bold">
+                                Select Customer <span class="text-danger">*</span>
+                            </label>
+                            <select id="CustomerId" name="CustomerId" class="form-select form-select-lg">
+                                <option value="">-- Choose a Customer --</option>
+                                @if (ViewBag.Customers != null)
+                                {
+                                    @foreach (var customer in (IEnumerable<Customer>)ViewBag.Customers)
+                                    {
+                                        @if (Model?.CustomerId == customer.Id)
+                                        {
+                                            <option value="@customer.Id" selected>@customer.Name (@customer.Email)</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@customer.Id">@customer.Name (@customer.Email)</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                            <small class="text-muted">You must select a customer</small>
+                            <span asp-validation-for="CustomerId" class="text-danger d-block"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="CheckinDate" class="form-label fw-bold">
+                                Check-in Date <span class="text-danger">*</span>
+                            </label>
+                            @{
+                                string checkinValue = Model?.CheckinDate != default ? Model.CheckinDate.ToString("yyyy-MM-dd") : "";
+                            }
+                            <input id="CheckinDate" name="CheckinDate" type="date" class="form-control form-control-lg" value="@checkinValue">
+                            <small class="text-muted">When will the guest arrive?</small>
+                            <span asp-validation-for="CheckinDate" class="text-danger d-block"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="CheckoutDate" class="form-label fw-bold">
+                                Check-out Date <span class="text-danger">*</span>
+                            </label>
+                            @{
+                                string checkoutValue = Model?.CheckoutDate != default ? Model.CheckoutDate.ToString("yyyy-MM-dd") : "";
+                            }
+                            <input id="CheckoutDate" name="CheckoutDate" type="date" class="form-control form-control-lg" value="@checkoutValue">
+                            <small class="text-muted">Must be AFTER check-in date</small>
+                            <span asp-validation-for="CheckoutDate" class="text-danger d-block"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="RoomId" class="form-label fw-bold">
+                                Select Room <span class="text-danger">*</span>
+                            </label>
+                            <select id="RoomId" name="RoomId" class="form-select form-select-lg">
+                                <option value="">-- Choose a Room --</option>
+                                @if (ViewBag.Rooms != null)
+                                {
+                                    @foreach (var room in (IEnumerable<Room>)ViewBag.Rooms)
+                                    {
+                                        @if (room.IsAvailable)
+                                        {
+                                            @if (Model?.RoomId == room.Id)
+                                            {
+                                                <option value="@room.Id" selected>Room @room.RoomNumber - @room.RoomType - $@room.PricePerNight/night</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@room.Id">Room @room.RoomNumber - @room.RoomType - $@room.PricePerNight/night</option>
+                                            }
+                                        }
+                                    }
+                                }
+                            </select>
+                            <small class="text-muted">Rooms with confirmed bookings for selected dates are hidden</small>
+                            <span asp-validation-for="RoomId" class="text-danger d-block"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="Status" class="form-label fw-bold">Booking Status</label>
+                            <select id="Status" name="Status" class="form-select form-select-lg">
+                                @if (Model?.Status == BookingStatus.Pending)
+                                {
+                                    <option value="1" selected>Pending</option>
+                                }
+                                else
+                                {
+                                    <option value="1">Pending</option>
+                                }
+                                @if (Model?.Status == BookingStatus.Confirmed)
+                                {
+                                    <option value="2" selected>Confirmed</option>
+                                }
+                                else
+                                {
+                                    <option value="2">Confirmed</option>
+                                }
+                                @if (Model?.Status == BookingStatus.CheckedIn)
+                                {
+                                    <option value="3" selected>CheckedIn</option>
+                                }
+                                else
+                                {
+                                    <option value="3">CheckedIn</option>
+                                }
+                                @if (Model?.Status == BookingStatus.CheckedOut)
+                                {
+                                    <option value="4" selected>CheckedOut</option>
+                                }
+                                else
+                                {
+                                    <option value="4">CheckedOut</option>
+                                }
+                                @if (Model?.Status == BookingStatus.Cancelled)
+                                {
+                                    <option value="5" selected>Cancelled</option>
+                                }
+                                else
+                                {
+                                    <option value="5">Cancelled</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-check-circle me-2"></i> Create Booking
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary btn-lg">
+                                <i class="bi bi-arrow-left me-2"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    
+    <script>
+        // Update available rooms when dates change
+        document.getElementById('CheckinDate').addEventListener('change', updateAvailableRooms);
+        document.getElementById('CheckoutDate').addEventListener('change', updateAvailableRooms);
+
+        function updateAvailableRooms() {
+            const checkinDate = document.getElementById('CheckinDate').value;
+            const checkoutDate = document.getElementById('CheckoutDate').value;
+            const roomSelect = document.getElementById('RoomId');
+
+            if (!checkinDate || !checkoutDate) return;
+
+            fetch(`/Booking/GetAvailableRooms?checkinDate=${checkinDate}&checkoutDate=${checkoutDate}`)
+                .then(response => response.json())
+                .then(data => {
+                    const currentRoomId = roomSelect.value;
+                    roomSelect.innerHTML = '<option value="">-- Choose a Room --</option>';
+                    
+                    data.rooms.forEach(room => {
+                        const option = document.createElement('option');
+                        option.value = room.id;
+                        option.text = `Room ${room.roomNumber} - ${room.roomType} - $${room.pricePerNight}/night`;
+                        roomSelect.appendChild(option);
+                    });
+
+                    // Re-select the previous room if it's still available
+                    if (currentRoomId) {
+                        roomSelect.value = currentRoomId;
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+}
