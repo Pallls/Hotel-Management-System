@@ -1,198 +1,266 @@
-@{
-    ViewData["Title"] = "Admin Dashboard";
-    var stats = (Dictionary<string, object>)ViewData.Model;
-}
-
-<div class="container-fluid">
-    <!-- Page Header -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <h1 class="display-5 fw-bold">Admin Dashboard</h1>
-            <p class="text-muted">Welcome to Hotel Management System</p>
-        </div>
-    </div>
-
-    <!-- Statistics Cards -->
-    <div class="row mb-4">
-        <!-- Total Rooms -->
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="card border-0 shadow-sm bg-primary text-white">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="card-title mb-0">Total Rooms</h6>
-                            <h3 class="mb-0 mt-2">@stats["TotalRooms"]</h3>
-                        </div>
-                        <i class="bi bi-door-open fs-1 opacity-50"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Available Rooms -->
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="card border-0 shadow-sm bg-success text-white">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="card-title mb-0">Available Rooms</h6>
-                            <h3 class="mb-0 mt-2">@stats["AvailableRooms"]</h3>
-                        </div>
-                        <i class="bi bi-check-circle fs-1 opacity-50"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Occupied Rooms -->
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="card border-0 shadow-sm bg-success text-white">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="card-title mb-0">Occupied Rooms</h6>
-                            <h3 class="mb-0 mt-2">@stats["OccupiedRooms"]</h3>
-                        </div>
-                        <i class="bi bi-x-circle fs-1 opacity-50"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Total Customers -->
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="card border-0 shadow-sm bg-info text-white">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="card-title mb-0">Total Registered Customers</h6>
-                            <h3 class="mb-0 mt-2">@stats["TotalCustomers"]</h3>
-                        </div>
-                        <i class="bi bi-people fs-1 opacity-50"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Total Revenue -->
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="card border-0 shadow-sm bg-warning text-white">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="card-title mb-0">Total Revenue</h6>
-                            <h3 class="mb-0 mt-2">RM @stats["TotalRevenue"]</h3>
-                        </div>
-                        <i class="bi bi-cash-coin fs-1 opacity-50"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Booking Status Overview -->
-    <div class="row mb-4">
-        <div class="col-lg-8">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-white border-bottom">
-                    <h5 class="mb-0">Booking Status Overview</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row text-center">
-                        <div class="col-md-3 mb-3">
-                            <div class="p-3 bg-light rounded">
-                                <h6 class="text-muted mb-2">Total Bookings</h6>
-                                <h3 class="text-primary mb-0">@stats["TotalBookings"]</h3>
-                            </div>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <div class="p-3 bg-light rounded">
-                                <h6 class="text-muted mb-2">Confirmed</h6>
-                                <h3 class="text-success mb-0">@stats["ConfirmedBookings"]</h3>
-                            </div>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <div class="p-3 bg-light rounded">
-                                <h6 class="text-muted mb-2">Pending</h6>
-                                <h3 class="text-warning mb-0">@stats["PendingBookings"]</h3>
-                            </div>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                                <div class="p-3 bg-light rounded">
-                                <h6 class="text-muted mb-2">Checked In</h6>
-                                <h3 class="text-info mb-0">@stats["CheckedInBookings"]</h3>
-                            </div>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <div class="p-3 bg-light rounded">
-                                <h6 class="text-muted mb-2">Checked Out</h6>
-                                <h3 class="text-secondary mb-0">@stats["CheckedOutBookings"]</h3>
-                            </div>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <div class="p-3 bg-light rounded">
-                                <h6 class="text-muted mb-2">Cancelled</h6>
-                                <h3 class="text-danger mb-0">@stats["CancelledBookings"]</h3>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="p-3 bg-light rounded">
-                                <h6 class="text-muted mb-2">Occupancy Rate</h6>
-                                <h3 class="text-info mb-0">
-                                    @{
-                                        int total = (int)stats["TotalRooms"];
-                                        int available = (int)stats["AvailableRooms"];
-                                        int rate = total > 0 ? (total - available) * 100 / total : 0;
-                                    }
-                                    @rate%
-                                </h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-4">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-white border-bottom">
-                    <h5 class="mb-0">Quick Actions</h5>
-                </div>
-                <div class="card-body">
-                    <div class="list-group list-group-flush">
-                        <a asp-controller="Booking" asp-action="Create" class="list-group-item list-group-item-action py-3">
-                            <i class="bi bi-plus-circle text-primary me-2"></i>
-                            <span>New Booking</span>
-                            <i class="bi bi-chevron-right float-end text-muted"></i>
-                        </a>
-                        <a asp-controller="Room" asp-action="Index" class="list-group-item list-group-item-action py-3">
-                            <i class="bi bi-door-open text-success me-2"></i>
-                            <span>Manage Rooms</span>
-                            <i class="bi bi-chevron-right float-end text-muted"></i>
-                        </a>
-                        <a asp-controller="Customer" asp-action="Index" class="list-group-item list-group-item-action py-3">
-                            <i class="bi bi-person text-info me-2"></i>
-                            <span>Manage Customers</span>
-                            <i class="bi bi-chevron-right float-end text-muted"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-@functions {
-    string GetStatusColor(BookingStatus status)
-    {
-        return status switch
-        {
-            BookingStatus.Pending => "warning",
-            BookingStatus.Confirmed => "success",
-            BookingStatus.CheckedIn => "info",
-            BookingStatus.CheckedOut => "dark",
-            BookingStatus.Cancelled => "danger",
-            _ => "secondary"
-        };
+    @{
+        ViewData["Title"] = "Admin Dashboard";
+        var stats = (Dictionary<string, object>)ViewData.Model;
     }
-}
+
+    <div class="container-fluid">
+        <!-- Page Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <h1 class="display-5 fw-bold">Admin Dashboard</h1>
+                <p class="text-muted">Welcome to Hotel Management System</p>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="row mb-4">
+            <!-- Total Rooms -->
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="card border-0 shadow-sm bg-primary text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-title mb-0">Total Rooms</h6>
+                                <h3 class="mb-0 mt-2">@stats["TotalRooms"]</h3>
+                            </div>
+                            <i class="bi bi-door-open fs-1 opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Available Rooms -->
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="card border-0 shadow-sm bg-success text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-title mb-0">Available Rooms</h6>
+                                <h3 class="mb-0 mt-2">@stats["AvailableRooms"]</h3>
+                            </div>
+                            <i class="bi bi-check-circle fs-1 opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Occupied Rooms -->
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="card border-0 shadow-sm bg-success text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-title mb-0">Occupied Rooms</h6>
+                                <h3 class="mb-0 mt-2">@stats["OccupiedRooms"]</h3>
+                            </div>
+                            <i class="bi bi-x-circle fs-1 opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Customers -->
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="card border-0 shadow-sm bg-info text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-title mb-0">Total Registered Customers</h6>
+                                <h3 class="mb-0 mt-2">@stats["TotalCustomers"]</h3>
+                            </div>
+                            <i class="bi bi-people fs-1 opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Revenue -->
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="card border-0 shadow-sm bg-warning text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-title mb-0">Total Revenue</h6>
+                                <h3 class="mb-0 mt-2">RM @stats["TotalRevenue"]</h3>
+                            </div>
+                            <i class="bi bi-cash-coin fs-1 opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking Status Overview -->
+        <div class="row mb-4">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white border-bottom">
+                        <h5 class="mb-0">Booking Status Overview</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-md-3 mb-3">
+                                <div class="p-3 bg-light rounded">
+                                    <h6 class="text-muted mb-2">Total Bookings</h6>
+                                    <h3 class="text-primary mb-0">@stats["TotalBookings"]</h3>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="p-3 bg-light rounded">
+                                    <h6 class="text-muted mb-2">Confirmed</h6>
+                                    <h3 class="text-success mb-0">@stats["ConfirmedBookings"]</h3>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="p-3 bg-light rounded">
+                                    <h6 class="text-muted mb-2">Pending</h6>
+                                    <h3 class="text-warning mb-0">@stats["PendingBookings"]</h3>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                    <div class="p-3 bg-light rounded">
+                                    <h6 class="text-muted mb-2">Checked In</h6>
+                                    <h3 class="text-info mb-0">@stats["CheckedInBookings"]</h3>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="p-3 bg-light rounded">
+                                    <h6 class="text-muted mb-2">Checked Out</h6>
+                                    <h3 class="text-secondary mb-0">@stats["CheckedOutBookings"]</h3>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="p-3 bg-light rounded">
+                                    <h6 class="text-muted mb-2">Cancelled</h6>
+                                    <h3 class="text-danger mb-0">@stats["CancelledBookings"]</h3>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="p-3 bg-light rounded">
+                                    <h6 class="text-muted mb-2">Occupancy Rate</h6>
+                                    <h3 class="text-info mb-0">
+                                        @{
+                                            int total = (int)stats["TotalRooms"];
+                                            int available = (int)stats["AvailableRooms"];
+                                            int rate = total > 0 ? (total - available) * 100 / total : 0;
+                                        }
+                                        @rate%
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white border-bottom">
+                        <h5 class="mb-0">Quick Actions</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group list-group-flush">
+                            <a asp-controller="Booking" asp-action="Create" class="list-group-item list-group-item-action py-3">
+                                <i class="bi bi-plus-circle text-primary me-2"></i>
+                                <span>New Booking</span>
+                                <i class="bi bi-chevron-right float-end text-muted"></i>
+                            </a>
+                            <a asp-controller="Room" asp-action="Index" class="list-group-item list-group-item-action py-3">
+                                <i class="bi bi-door-open text-success me-2"></i>
+                                <span>Manage Rooms</span>
+                                <i class="bi bi-chevron-right float-end text-muted"></i>
+                            </a>
+                            <a asp-controller="Customer" asp-action="Index" class="list-group-item list-group-item-action py-3">
+                                <i class="bi bi-person text-info me-2"></i>
+                                <span>Manage Customers</span>
+                                <i class="bi bi-chevron-right float-end text-muted"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Revenue Performance (@DateTime.Now.Year)</h5>
+                        <span class="badge bg-primary">Monthly Sum</span>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="revenueChart" style="min-height: 350px; max-height: 350px;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @functions {
+        string GetStatusColor(BookingStatus status)
+        {
+            return status switch
+            {
+                BookingStatus.Pending => "warning",
+                BookingStatus.Confirmed => "success",
+                BookingStatus.CheckedIn => "info",
+                BookingStatus.CheckedOut => "dark",
+                BookingStatus.Cancelled => "danger",
+                _ => "secondary"
+            };
+        }
+    }
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get the data from the C# Dictionary
+        const labels = @Json.Serialize(stats["ChartLabels"]);
+        const dataValues = @Json.Serialize(stats["ChartData"]);
+
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        
+        new Chart(ctx, {
+            type: 'bar', // Professional bar chart
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Revenue (RM)',
+                    data: dataValues,
+                    backgroundColor: 'rgba(13, 110, 253, 0.8)', // Primary Blue
+                    borderColor: '#0d6efd',
+                    borderWidth: 1,
+                    borderRadius: 4 // Rounded corners for bars
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                // Add "RM" prefix to the hover tooltip
+                                return 'Revenue: RM ' + context.parsed.y.toLocaleString();
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return 'RM ' + value; // Add RM to Y axis
+                            }
+                        }
+                    },
+                    x: {
+                        grid: { display: false } // Cleaner look without vertical lines
+                    }
+                }
+            }
+        });
+    });
+</script>
