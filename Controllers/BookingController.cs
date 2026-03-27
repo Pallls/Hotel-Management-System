@@ -38,7 +38,7 @@ namespace HotelManagementSystem.Controllers
             {
                 try
                 {
-                    // Parse and validate all inputs manually
+                
                     if (!int.TryParse(customerId, out int customerIdInt) || customerIdInt <= 0)
                     {
                         ModelState.AddModelError("CustomerId", "The Customer field is required.");
@@ -75,7 +75,7 @@ namespace HotelManagementSystem.Controllers
                         ModelState.AddModelError("CheckoutDate", "Check-out date is required.");
                     }
 
-                    // Additional validation
+                   
                     if (ModelState.IsValid)
                     {
                         var customer = _context.Customers.Find(customerIdInt);

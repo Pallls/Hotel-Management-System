@@ -218,3 +218,4 @@ D:\Internship Stuff\Hotel Management System\HotelManagementSystem\obj\Debug\net9
 D:\Internship Stuff\Hotel Management System\HotelManagementSystem\obj\Debug\net9.0\HotelManagementSystem.pdb
 D:\Internship Stuff\Hotel Management System\HotelManagementSystem\obj\Debug\net9.0\HotelManagementSystem.genruntimeconfig.cache
 D:\Internship Stuff\Hotel Management System\HotelManagementSystem\obj\Debug\net9.0\ref\HotelManagementSystem.dll
+D:\Internship Stuff\Hotel Management System\HotelManagementSystem\obj\Debug\net9.0\HotelManagementSystem.sourcelink.json

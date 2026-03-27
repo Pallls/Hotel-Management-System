@@ -21,19 +21,26 @@ namespace HotelManagementSystem.Models
     }
     public class Booking
     {
+        [Required]
         public int Id { get; set; }
 
+        [Required]
         public int CustomerId { get; set; }
 
+        [Required]
         public int RoomId { get; set; }
 
+        [Required]
         public DateTime CheckinDate { get; set; }
 
+        [Required]
         public DateTime CheckoutDate { get; set; }
 
+        [Required]
         [Range(0.01, 10000, ErrorMessage = "Price must be greater than zero.")]
         public decimal TotalPrice { get; set; }
 
+        [Required]
         public BookingStatus Status { get; set; } = BookingStatus.Pending;
 
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
