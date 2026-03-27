@@ -91,19 +91,22 @@
                             <label for="RoomId" class="form-label fw-bold">
                                 Select Room <span class="text-danger">*</span>
                             </label>
-                            <select id="RoomId" name="RoomId" class="form-select form-select-lg">
+                            <select id="RoomId" name="RoomId" class="form-select form-select-lg" data-booking-id="@Model.Id">
                                 <option value="">-- Choose a Room --</option>
                                 @if (ViewBag.Rooms != null)
                                 {
                                     @foreach (var room in (IEnumerable<Room>)ViewBag.Rooms)
                                     {
-                                        @if (Model?.RoomId == room.Id)
+                                        @if (room.IsAvailable || Model?.RoomId == room.Id)
                                         {
-                                            <option value="@room.Id" selected>Room @room.RoomNumber - @room.RoomType - $@room.PricePerNight/night</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="@room.Id">Room @room.RoomNumber - @room.RoomType - $@room.PricePerNight/night</option>
+                                            @if (Model?.RoomId == room.Id)
+                                            {
+                                                <option value="@room.Id" selected>Room @room.RoomNumber - @room.RoomType - $@room.PricePerNight/night</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@room.Id">Room @room.RoomNumber - @room.RoomType - $@room.PricePerNight/night</option>
+                                            }
                                         }
                                     }
                                 }
@@ -183,32 +186,32 @@
         document.getElementById('CheckinDate').addEventListener('change', updateAvailableRooms);
         document.getElementById('CheckoutDate').addEventListener('change', updateAvailableRooms);
 
-        function updateAvailableRooms() {
-            const checkinDate = document.getElementById('CheckinDate').value;
-            const checkoutDate = document.getElementById('CheckoutDate').value;
-            const roomSelect = document.getElementById('RoomId');
+                    function updateAvailableRooms() {
+                const checkinDate = document.getElementById('CheckinDate').value;
+                const checkoutDate = document.getElementById('CheckoutDate').value;
+                const roomSelect = document.getElementById('RoomId');
+                const bookingId = roomSelect.getAttribute('data-booking-id');
 
-            if (!checkinDate || !checkoutDate) return;
+                if (!checkinDate || !checkoutDate) return;
 
-            fetch(`/Booking/GetAvailableRooms?checkinDate=${checkinDate}&checkoutDate=${checkoutDate}`)
-                .then(response => response.json())
-                .then(data => {
-                    const currentRoomId = roomSelect.value;
-                    roomSelect.innerHTML = '<option value="">-- Choose a Room --</option>';
-                    
-                    data.rooms.forEach(room => {
-                        const option = document.createElement('option');
-                        option.value = room.id;
-                        option.text = `Room ${room.roomNumber} - ${room.roomType} - $${room.pricePerNight}/night`;
-                        roomSelect.appendChild(option);
-                    });
+                fetch(`/Booking/GetAvailableRooms?checkinDate=${checkinDate}&checkoutDate=${checkoutDate}&bookingId=${bookingId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const currentRoomId = roomSelect.value;
+                        roomSelect.innerHTML = '<option value="">-- Choose a Room --</option>';
+                        
+                        data.rooms.forEach(room => {
+                            const option = document.createElement('option');
+                            option.value = room.id;
+                            option.text = `Room ${room.roomNumber} - ${room.roomType} - $${room.pricePerNight}/night`;
+                            roomSelect.appendChild(option);
+                        });
 
-                    // Re-select the previous room if it's still available
-                    if (currentRoomId) {
-                        roomSelect.value = currentRoomId;
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-        }
+                        if (currentRoomId) {
+                            roomSelect.value = currentRoomId;
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
     </script>
 }

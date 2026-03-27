@@ -44,13 +44,28 @@
             </div>
         </div>
 
+        <!-- Occupied Rooms -->
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm bg-success text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title mb-0">Occupied Rooms</h6>
+                            <h3 class="mb-0 mt-2">@stats["OccupiedRooms"]</h3>
+                        </div>
+                        <i class="bi bi-x-circle fs-1 opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Total Customers -->
         <div class="col-lg-3 col-md-6 mb-3">
             <div class="card border-0 shadow-sm bg-info text-white">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h6 class="card-title mb-0">Total Customers</h6>
+                            <h6 class="card-title mb-0">Total Registered Customers</h6>
                             <h3 class="mb-0 mt-2">@stats["TotalCustomers"]</h3>
                         </div>
                         <i class="bi bi-people fs-1 opacity-50"></i>
@@ -100,6 +115,24 @@
                             <div class="p-3 bg-light rounded">
                                 <h6 class="text-muted mb-2">Pending</h6>
                                 <h3 class="text-warning mb-0">@stats["PendingBookings"]</h3>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                                <div class="p-3 bg-light rounded">
+                                <h6 class="text-muted mb-2">Checked In</h6>
+                                <h3 class="text-info mb-0">@stats["CheckedInBookings"]</h3>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="p-3 bg-light rounded">
+                                <h6 class="text-muted mb-2">Checked Out</h6>
+                                <h3 class="text-secondary mb-0">@stats["CheckedOutBookings"]</h3>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="p-3 bg-light rounded">
+                                <h6 class="text-muted mb-2">Cancelled</h6>
+                                <h3 class="text-danger mb-0">@stats["CancelledBookings"]</h3>
                             </div>
                         </div>
                         <div class="col-md-3">

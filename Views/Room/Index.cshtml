@@ -30,13 +30,17 @@
                         <div class="card-header bg-white border-bottom position-relative">
                             <h5 class="card-title mb-0">Room @room.RoomNumber</h5>
                             <div class="position-absolute top-0 end-0 mt-2 me-3">
-                                @if (room.IsAvailable)
+                                @if (!room.IsAvailable)
                                 {
-                                    <span class="badge bg-success">Available</span>
+                                    <span class="badge bg-success">Maintenance</span>
                                 }
-                                else
+                                else if(room.IsOccupiedToday)
                                 {
                                     <span class="badge bg-danger">Occupied</span>
+                                } else
+                                {
+                                    <span class="badge bg-success">Available</span>
+
                                 }
                             </div>
                         </div>
@@ -96,7 +100,7 @@
         <div class="col-md-3">
             <div class="card border-0 shadow-sm text-center">
                 <div class="card-body">
-                    <h4 class="text-success">@Model.Count(r => r.IsAvailable)</h4>
+                    <h4 class="text-success">@Model.Count(r => !r.IsOccupiedToday)</h4>
                     <p class="text-muted mb-0">Available</p>
                 </div>
             </div>
@@ -104,7 +108,7 @@
         <div class="col-md-3">
             <div class="card border-0 shadow-sm text-center">
                 <div class="card-body">
-                    <h4 class="text-danger">@Model.Count(r => !r.IsAvailable)</h4>
+                    <h4 class="text-danger">@Model.Count(r => r.IsOccupiedToday)</h4>
                     <p class="text-muted mb-0">Occupied</p>
                 </div>
             </div>

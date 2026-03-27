@@ -1,7 +1,9 @@
 using HotelManagementSystem.Data;
 using HotelManagementSystem.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace HotelManagementSytemControllers
 {
@@ -16,7 +18,12 @@ namespace HotelManagementSytemControllers
 
         public IActionResult Index()
         {
-            var rooms = _context.Rooms.ToList();
+            var today = DateTime.Today;
+
+            var rooms = _context.Rooms
+                .Include(r => r.Bookings)
+                .ToList();
+
             return View(rooms);
         }
 
@@ -29,6 +36,14 @@ namespace HotelManagementSytemControllers
         [ValidateAntiForgeryToken]   
         public IActionResult Create(Room room)
         {
+
+            bool exists = _context.Rooms.Any(r => r.RoomNumber == room.RoomNumber);
+
+            if(exists)
+            {
+                ModelState.AddModelError("RoomNumber", "Room number already exists. Please choose a different number.");
+            }
+
             if(ModelState.IsValid)
             {
                 _context.Rooms.Add(room);

@@ -18,8 +18,13 @@ namespace HotelManagementSystem.Models
         public decimal PricePerNight {get; set; }
 
         [Required]
-        public bool IsAvailable {get; set; }
+        public bool IsAvailable {get; set; } = true;
 
         public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
+
+        public bool IsOccupiedToday => Bookings.Any(b => 
+            b.CheckinDate <= DateTime.Today && b.CheckoutDate >= DateTime.Today && 
+            (b.Status == BookingStatus.Confirmed || b.Status == BookingStatus.CheckedIn));
+        
     }
 }

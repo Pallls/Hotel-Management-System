@@ -55,6 +55,9 @@ namespace HotelManagementSystem.Controllers
                         if (!DateTime.TryParseExact(CheckinDate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out checkinDate))
                         {
                             ModelState.AddModelError("CheckinDate", "Invalid check-in date format.");
+                        } else if (checkinDate.Date < DateTime.Today)
+                        {
+                            ModelState.AddModelError("CheckinDate", "Check-in date cannot be in the past.");
                         }
                     }
                     else
@@ -188,6 +191,9 @@ namespace HotelManagementSystem.Controllers
                         if (!DateTime.TryParseExact(CheckoutDate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out checkoutDate))
                         {
                             ModelState.AddModelError("CheckoutDate", "Invalid check-out date format.");
+                        } else if (checkinDate.Date < DateTime.Today)
+                        {
+                            ModelState.AddModelError("CheckinDate", "Check-in date cannot be in the past.");
                         }
                     }
                     else
@@ -260,37 +266,43 @@ namespace HotelManagementSystem.Controllers
 
 
         [HttpGet]
-        public IActionResult GetAvailableRooms(string checkinDate, string checkoutDate)
-        {
-            try
+            public IActionResult GetAvailableRooms(string checkinDate, string checkoutDate, int? bookingId = null)
             {
-                if (string.IsNullOrEmpty(checkinDate) || string.IsNullOrEmpty(checkoutDate))
+                try
+                {
+                    if (string.IsNullOrEmpty(checkinDate) || string.IsNullOrEmpty(checkoutDate))
+                        return Json(new { rooms = _context.Rooms.ToList() });
+
+                    if (!DateTime.TryParseExact(checkinDate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var checkIn))
+                        return Json(new { rooms = _context.Rooms.ToList() });
+
+                    if (!DateTime.TryParseExact(checkoutDate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var checkOut))
+                        return Json(new { rooms = _context.Rooms.ToList() });
+
+                    // Get rooms that DON'T have active bookings overlapping these dates
+                    // Exclude: Pending, Confirmed, CheckedIn (include only CheckedOut and Cancelled)
+                    // But don't exclude the booking being edited
+                    var bookedRoomIds = _context.Bookings
+                        .Where(b => (b.Status == BookingStatus.Pending || 
+                                    b.Status == BookingStatus.Confirmed ||
+                                    b.Status == BookingStatus.CheckedIn) &&
+                                    b.CheckinDate < checkOut &&
+                                    b.CheckoutDate > checkIn &&
+                                    (bookingId == null || b.Id != bookingId))  // Exclude current booking if editing
+                        .Select(b => b.RoomId)
+                        .Distinct()
+                        .ToList();
+
+                    var availableRooms = _context.Rooms
+                        .Where(r => !bookedRoomIds.Contains(r.Id))
+                        .ToList();
+
+                    return Json(new { rooms = availableRooms });
+                }
+                catch
+                {
                     return Json(new { rooms = _context.Rooms.ToList() });
-
-                if (!DateTime.TryParseExact(checkinDate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var checkIn))
-                    return Json(new { rooms = _context.Rooms.ToList() });
-
-                if (!DateTime.TryParseExact(checkoutDate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var checkOut))
-                    return Json(new { rooms = _context.Rooms.ToList() });
-
-                // Get rooms that DON'T have confirmed bookings overlapping these dates
-                var bookedRoomIds = _context.Bookings
-                    .Where(b => b.Status == BookingStatus.Confirmed &&
-                                b.CheckinDate < checkOut &&
-                                b.CheckoutDate > checkIn)
-                    .Select(b => b.RoomId)
-                    .ToList();
-
-                var availableRooms = _context.Rooms
-                    .Where(r => !bookedRoomIds.Contains(r.Id))
-                    .ToList();
-
-                return Json(new { rooms = availableRooms });
+                }
             }
-            catch
-            {
-                return Json(new { rooms = _context.Rooms.ToList() });
-            }
-        }
     }    
 }
