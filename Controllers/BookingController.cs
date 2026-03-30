@@ -191,10 +191,7 @@ namespace HotelManagementSystem.Controllers
                         if (!DateTime.TryParseExact(CheckoutDate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out checkoutDate))
                         {
                             ModelState.AddModelError("CheckoutDate", "Invalid check-out date format.");
-                        } else if (checkinDate.Date < DateTime.Today)
-                        {
-                            ModelState.AddModelError("CheckinDate", "Check-in date cannot be in the past.");
-                        }
+                        } 
                     }
                     else
                     {
